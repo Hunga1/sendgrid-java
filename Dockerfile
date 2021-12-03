@@ -12,8 +12,9 @@ RUN yum update -y \
     && yum install -y make wget || true
 RUN wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo \
     && yum install -y maven || true
-RUN keytool -import -trustcacerts -keystore cacerts -ext san=dns:api.sendgrid.com,dns:*.sendgrid.com,dns:sendgrid.com -storepass changeit -noprompt \
+RUN keytool -importcert -trustcacerts -keystore cacerts -ext san=dns:api.sendgrid.com,dns:*.sendgrid.com,dns:sendgrid.com -storepass changeit -noprompt \
     -alias api.sendgrid.com -file /usr/local/share/ca-certificates/cert.crt || true
+RUN keytool -list -v -keystore cacerts
 
 WORKDIR /app
 COPY . .
